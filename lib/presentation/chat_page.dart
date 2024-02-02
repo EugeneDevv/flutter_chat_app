@@ -1,5 +1,6 @@
 import 'package:chat_app/domain/value_objects/app_assets.dart';
 import 'package:chat_app/domain/value_objects/app_constants.dart';
+import 'package:chat_app/presentation/core/widgets/message_item.dart';
 import 'package:chat_app/presentation/core/widgets/spaces.dart';
 import 'package:chat_app/presentation/theme/app_colors.dart';
 import 'package:chat_app/presentation/theme/text_theme.dart';
@@ -236,52 +237,7 @@ class ChatPageState extends State<ChatPage> {
               title = '${openChannel.name} (${messageList.length})';
             });
           },
-          child: Column(
-            children: <Widget>[
-              ListTile(
-                title: Text(
-                  message.message,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                subtitle: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Image.network(
-                      message.sender?.profileUrl ?? '',
-                      scale: 16,
-                      errorBuilder: (_, __, ___) {
-                        return const Icon(Icons.account_circle);
-                      },
-                      loadingBuilder: (_, __, ___) {
-                        return const Icon(Icons.account_circle);
-                      },
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 4),
-                        child: Text(
-                          message.sender?.userId ?? '',
-                          style: const TextStyle(fontSize: 12),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(left: 16),
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        DateTime.fromMillisecondsSinceEpoch(message.createdAt)
-                            .toString(),
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Divider(height: 1),
-            ],
-          ),
+          child: MessageItem(message: message),
         );
       },
     );
@@ -379,46 +335,4 @@ class ChatPageState extends State<ChatPage> {
       curve: Curves.fastOutSlowIn,
     );
   }
-}
-
-class MyOpenChannelHandler extends OpenChannelHandler {
-  MyOpenChannelHandler(this.state);
-  final ChatPageState state;
-
-  @override
-  void onMessageReceived(BaseChannel channel, BaseMessage message) {
-    state.addMessage(message);
-  }
-
-  @override
-  void onMessageUpdated(BaseChannel channel, BaseMessage message) {
-    state.updateMessage(message);
-  }
-
-  @override
-  void onMessageDeleted(BaseChannel channel, int messageId) {
-    state.deleteMessage(messageId);
-  }
-}
-
-class MyConnectionHandler extends ConnectionHandler {
-  MyConnectionHandler(this.state);
-  final ChatPageState state;
-
-  @override
-  void onConnected(String userId) {}
-
-  @override
-  void onDisconnected(String userId) {}
-
-  @override
-  void onReconnectStarted() {}
-
-  @override
-  void onReconnectSucceeded() {
-    state.initialize();
-  }
-
-  @override
-  void onReconnectFailed() {}
 }
