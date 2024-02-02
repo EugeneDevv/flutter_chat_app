@@ -1,4 +1,4 @@
-import 'package:chat_app/presentation/chat_page.dart';
+import 'package:chat_app/presentation/chat/chat_page.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:chat_app/presentation/app.dart';
 

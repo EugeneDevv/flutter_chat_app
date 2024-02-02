@@ -1,5 +1,7 @@
+import 'package:chat_app/domain/value_objects/app_constants.dart';
 import 'package:chat_app/l10n/l10n.dart';
-import 'package:chat_app/presentation/chat_page.dart';
+import 'package:chat_app/presentation/router/router.dart';
+import 'package:chat_app/presentation/router/routes.dart';
 import 'package:chat_app/presentation/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -8,11 +10,13 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       theme: AppTheme.dark(),
+      darkTheme: AppTheme.dark(),
+      title: appName,
+      routerConfig: goRouter(Routes.loginPagePath),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      home: const ChatPage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
