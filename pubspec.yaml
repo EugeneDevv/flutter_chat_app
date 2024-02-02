@@ -11,9 +11,14 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.2
+  flutter_dotenv: ^5.1.0
   flutter_localizations:
     sdk: flutter
+  flutter_svg: ^2.0.9
   intl: ^0.18.1
+  scrollable_positioned_list: ^0.3.8
+  sendbird_chat_sdk: ^4.2.0
+  sendbird_chat_widget: ^1.0.4
 
 dev_dependencies:
   bloc_test: ^9.1.1
@@ -25,3 +30,18 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
+  fonts:
+    - family: Pretendard
+      fonts:
+        - asset: fonts/Pretendard-Black.otf
+        - asset: fonts/Pretendard-Bold.otf
+        - asset: fonts/Pretendard-ExtraBold.otf
+        - asset: fonts/Pretendard-ExtraLight.otf
+        - asset: fonts/Pretendard-Light.otf
+        - asset: fonts/Pretendard-Medium.otf
+        - asset: fonts/Pretendard-Regular.otf
+        - asset: fonts/Pretendard-SemiBold.otf
+        - asset: fonts/Pretendard-Thin.otf
+  assets:
+    - .env
+    - assets/svgs/
