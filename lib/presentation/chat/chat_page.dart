@@ -1,11 +1,13 @@
 import 'package:chat_app/domain/value_objects/app_assets.dart';
 import 'package:chat_app/domain/value_objects/app_constants.dart';
+import 'package:chat_app/presentation/router/routes.dart';
 import 'package:chat_app/presentation/widgets/message_item.dart';
 import 'package:chat_app/presentation/widgets/spaces.dart';
 import 'package:chat_app/presentation/theme/app_colors.dart';
 import 'package:chat_app/presentation/theme/text_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 
@@ -62,9 +64,12 @@ class ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: SvgPicture.asset(
-          AppSvgs.backArrowIcon,
-          height: 40,
+        leading: GestureDetector(
+          onTap: ()=> context.pushReplacementNamed(Routes.loginPageRoute),
+          child: SvgPicture.asset(
+            AppSvgs.backArrowIcon,
+            height: 40,
+          ),
         ),
         leadingWidth: 40,
         title: Text(title),
@@ -172,7 +177,7 @@ class ChatPageState extends State<ChatPage> {
     return Container(
       width: double.maxFinite,
       height: 32,
-      color: Colors.purple[200],
+      color: AppColors.blue,
       child: IconButton(
         icon: const Icon(Icons.expand_less, size: 16),
         color: Colors.white,
