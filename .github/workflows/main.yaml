@@ -61,10 +61,5 @@ jobs:
       #   run: |
       #     flutter build apk --flavor development --target lib/main_development.dart --build-number ${{github.run_number}}
       #     BUNDLE_FILE_PATH=build/app/outputs/flutter-apk/app-release.apk
-      #     firebase appdistribution:distribute $BUNDLE_FILE_PATH --app $XHYDRATE_FIREBASE_APP_ID --groups "Internal Testers" --token $FIREBASE_TOKEN
-      # - name: 🧪 Run Tests
-      #   run: flutter test --coverage test/
-
-# XHYDRATE_FIREBASE_APP_ID=x-hydrate
-# FIREBASE_TOKEN=1//03IVQ5dtNTtCqCgYIARAAGAMSNwF-L9IrrRSM9GzujKu5Blh-UFLz7qEmg0zVLMgFEHLjF9qpBLV3JCGH864E4FcVm9TfxR2rvzk
-# ${{github.run_number}}
+      - name: 🧪 Run Tests
+        run: flutter test --coverage test/
