@@ -1,7 +1,7 @@
 import 'package:chat_app/domain/value_objects/app_assets.dart';
 import 'package:chat_app/domain/value_objects/app_constants.dart';
-import 'package:chat_app/presentation/core/widgets/message_item.dart';
-import 'package:chat_app/presentation/core/widgets/spaces.dart';
+import 'package:chat_app/presentation/widgets/message_item.dart';
+import 'package:chat_app/presentation/widgets/spaces.dart';
 import 'package:chat_app/presentation/theme/app_colors.dart';
 import 'package:chat_app/presentation/theme/text_theme.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,9 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({super.key});
+  const ChatPage({required this.userIdentifier, super.key});
+
+  final String userIdentifier;
 
   @override
   State<ChatPage> createState() => ChatPageState();
@@ -83,15 +85,6 @@ class ChatPageState extends State<ChatPage> {
                 Expanded(child: messageList.isNotEmpty ? list() : Container()),
               ],
             ),
-            // child: ListView.separated(
-            //   itemBuilder: (__, _) {
-            //     return const SizedBox();
-            //   },
-            //   separatorBuilder: (__, _) {
-            //     return const SizedBox();
-            //   },
-            //   itemCount: 20,
-            // ),
           ),
           verySmallVerticalSizedBox,
           Container(
@@ -103,7 +96,6 @@ class ChatPageState extends State<ChatPage> {
                   AppSvgs.addIcon,
                 ),
                 Flexible(
-                  // width: double.infinity,
                   child: TextField(
                     controller: messageController,
                     focusNode: textFieldFocusNode,
@@ -213,21 +205,6 @@ class ChatPageState extends State<ChatPage> {
         final BaseMessage message = messageList[index];
 
         return GestureDetector(
-          onDoubleTap: () async {
-            // final openChannel = await OpenChannel.getChannel(channelUrl);
-            // Get.toNamed(
-            //         '/message/update/${openChannel.channelType.toString()}/${openChannel.channelUrl}/${message.messageId}')
-            //     ?.then((message) async {
-            //   if (message != null) {
-            //     for (int index = 0; index < messageList.length; index++) {
-            //       if (messageList[index].messageId == message.messageId) {
-            //         setState(() => messageList[index] = message);
-            //         break;
-            //       }
-            //     }
-            //   }
-            // });
-          },
           onLongPress: () async {
             final OpenChannel openChannel =
                 await OpenChannel.getChannel(channelUrl);
@@ -237,14 +214,17 @@ class ChatPageState extends State<ChatPage> {
               title = '${openChannel.name} (${messageList.length})';
             });
           },
-          child: MessageItem(message: message),
+          child: MessageItem(
+            message: message,
+            userIdentifier: widget.userIdentifier,
+          ),
         );
       },
     );
   }
 
   Future<void> showDialogToResendUserMessage(UserMessage message) async {
-    await showDialog(
+    await showDialog<dynamic>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
@@ -293,7 +273,7 @@ class ChatPageState extends State<ChatPage> {
   }
 
   void updateMessage(BaseMessage message) {
-    OpenChannel.getChannel(channelUrl).then((openChannel) {
+    OpenChannel.getChannel(channelUrl).then((OpenChannel openChannel) {
       setState(() {
         for (int index = 0; index < messageList.length; index++) {
           if (messageList[index].messageId == message.messageId) {

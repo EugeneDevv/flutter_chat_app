@@ -1,4 +1,8 @@
-name: chat_app
+name: flixsa
+
+env:
+  FLUTTER_VERSION: "3.16.9"
+  SENTRY_DNS: ${{ secrets.SENDBIRD_APP_ID }}
 
 concurrency:
   group: $-$
@@ -7,23 +11,60 @@ concurrency:
 on:
   push:
     branches:
-      - main
+      - master
+      # - setup-ci
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
-  semantic-pull-request:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
+  setup-environment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🤫 Set Up Environment Variables
+        run: |
+          touch .env
+          echo SENTRY_DNS="$SENTRY_DNS" >> .env
 
-  build:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
-    with:
-      flutter_channel: stable
+  # semantic-pull-request:
+  #   uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
 
-  spell-check:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/spell_check.yml@v1
-    with:
-      includes: |
-        **/*.md
-      modified_files_only: false
+  # spell-check:
+  #   uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/spell_check.yml@v1
+  #   with:
+  #     includes: |
+  #       **/*.md
+  #     modified_files_only: false
+  
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Install Flutter
+        run: git clone https://github.com/flutter/flutter.git --depth 1 -b $FLUTTER_VERSION _flutter
+      - name: Add Flutter to Path
+        run: echo "$GITHUB_WORKSPACE/_flutter/bin" >> $GITHUB_PATH
+      - name: 📦 Install Dependencies
+        run: flutter clean && flutter pub get
+      - name: 🕵️ Analyze
+        run: flutter analyze lib/ 
+      - name: 🤫 Set Up Environment Variables
+        run: |
+          touch .env
+          echo STAGING_SERVER_URL="STAGING_SERVER_URL" >> .env
+          echo GOOGLE_SERVER_CLIENT_ID="GOOGLE_SERVER_CLIENT_ID" >> .env
+          echo GOOGLE_SERVER_CLIENT_ID="GOOGLE_SERVER_CLIENT_ID" >> .env
+          echo DEV_SERVER_URL="DEV_SERVER_URL" >> .env
+          echo PROD_SERVER_URL="PROD_SERVER_URL" >> .env
+      # - name: Build android apk
+      #   run: |
+      #     flutter build apk --flavor development --target lib/main_development.dart --build-number ${{github.run_number}}
+      #     BUNDLE_FILE_PATH=build/app/outputs/flutter-apk/app-release.apk
+      #     firebase appdistribution:distribute $BUNDLE_FILE_PATH --app $XHYDRATE_FIREBASE_APP_ID --groups "Internal Testers" --token $FIREBASE_TOKEN
+      # - name: 🧪 Run Tests
+      #   run: flutter test --coverage test/
+
+# XHYDRATE_FIREBASE_APP_ID=x-hydrate
+# FIREBASE_TOKEN=1//03IVQ5dtNTtCqCgYIARAAGAMSNwF-L9IrrRSM9GzujKu5Blh-UFLz7qEmg0zVLMgFEHLjF9qpBLV3JCGH864E4FcVm9TfxR2rvzk
+# ${{github.run_number}}

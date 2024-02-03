@@ -1,10 +1,10 @@
-// ignore_for_file: lines_longer_than_80_chars
+// ignore_for_file: lines_longer_than_80_chars, empty_catches
 
 import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:chat_app/domain/value_objects/app_constants.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
@@ -42,24 +42,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
         final String sendBirdAppId = dotenv.env['SENDBIRD_APP_ID'] ?? '';
 
         await SendbirdChat.init(appId: sendBirdAppId);
-        // SendbirdChat.addUserEventHandler('Eugene123', handler);
-
-        final User user = await SendbirdChat.connect('Eujoh123');
-
-        print(user);
-
-        final OpenChannel openChannel = await OpenChannel.getChannel(
-          channelUrl,
-        );
-        // Call the instance method of the result object in the openChannel parameter of the callback method.
-        await openChannel.enter();
-        // The current user successfully enters the open channel as a participant,
-        // and can chat with other users in the channel using APIs.
-        print(openChannel.data);
-      } catch (e) {
-        // Handle error.
-        print(e);
-      }
+      } catch (e) {}
       runApp(await builder());
     },
     (Object error, StackTrace stackTrace) =>
