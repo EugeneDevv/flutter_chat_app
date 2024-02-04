@@ -541,14 +541,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.0"
-  sendbird_chat_widget:
-    dependency: "direct main"
-    description:
-      name: sendbird_chat_widget
-      sha256: ebd762432e81e8228b09e4e7af5c1b136b5af9c8678c8263edab609a49dcba90
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.4"
   shared_preferences:
     dependency: transitive
     description:
