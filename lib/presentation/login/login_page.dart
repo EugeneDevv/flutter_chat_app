@@ -98,6 +98,10 @@ class _LoginPageState extends State<LoginPage> {
                           setState(() {
                             isLoading = false;
                           });
+                          context.pushReplacementNamed(
+                            Routes.chatPageRoute,
+                            extra: userId,
+                          );
                         }
                       }
                     },
@@ -149,6 +153,10 @@ class _LoginPageState extends State<LoginPage> {
                         setState(() {
                           isLoadingGuest = false;
                         });
+                        context.pushReplacementNamed(
+                          Routes.chatPageRoute,
+                          extra: userId,
+                        );
                       }
                     },
                     child: isLoadingGuest

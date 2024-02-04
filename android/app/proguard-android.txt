@@ -1,0 +1,3 @@
+# SendBird chat
+-dontwarn com.sendbird.android.**
+-keep,allowoptimization,allowshrinking class com.sendbird.** { *; }
